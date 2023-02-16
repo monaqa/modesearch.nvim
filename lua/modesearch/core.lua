@@ -11,47 +11,6 @@ end
 ---@alias converter fun(query: string): string
 ---@alias mode {prompt: string, converter: converter}
 
--- ---@type mode[]
--- local modes = {
---     {
---         name = "rawstr",
---         converter = function(query)
---             return [[\V]] .. vim.fn.escape(query, [[/\]])
---         end,
---     },
---     {
---         name = "migemo",
---         converter = function(query)
---             return [[\v]] .. vim.fn["kensaku#query"](query)
---         end,
---     },
---     {
---         name = "regexp",
---         converter = function(query)
---             return [[\v]] .. vim.fn.escape(query, [[/]])
---         end,
---     },
--- }
-
--- ---@param prev_mode mode
--- ---@return mode
--- local function default_mode_converter(prev_mode)
---     local new_mode_name = ({
---         ["rawstr"] = "migemo",
---         ["migemo"] = "regexp",
---         ["regexp"] = "rawstr",
---     })[prev_mode.name]
---     for _, mode in ipairs(modes) do
---         if mode.name == new_mode_name then
---             return mode
---         end
---     end
---     return modes[1]
--- end
-
--- local current_mode = modes[1]
--- local prompt_active = false
-
 ---@return string?
 local function _prompt()
     local prev_mode_name = state.current_mode_name
@@ -89,15 +48,6 @@ function M.prompt()
     local current_mode = config.options.modes[state.current_mode_name]
     return search_cmd .. current_mode.converter(query) .. M.exprstr "<CR>"
 end
-
--- function M.change_mode()
---     if not prompt_active then
---         return ""
---     end
---     local new_mode = default_mode_converter(current_mode)
---     current_mode = new_mode
---     return M.exprstr "<CR>"
--- end
 
 function M.highlight_paint()
     local query = vim.fn.getcmdline()
