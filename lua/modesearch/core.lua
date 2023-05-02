@@ -15,18 +15,23 @@ end
 local function _prompt()
     local prev_mode_name = state.current_mode_name
     local prev_mode = config.options.modes[prev_mode_name]
-    local query = vim.fn.input {
+    local query
+    vim.ui.input({
         prompt = prev_mode.prompt,
         cancelreturn = M.exprstr "<Nul>",
-    }
+    }, function(text)
+        query = text
+    end)
     while state.current_mode_name ~= prev_mode_name do
         prev_mode_name = state.current_mode_name
         prev_mode = config.options.modes[prev_mode_name]
-        query = vim.fn.input {
+        vim.ui.input({
             prompt = prev_mode.prompt,
             default = query,
             cancelreturn = M.exprstr "<Nul>",
-        }
+        }, function(text)
+            query = text
+        end)
     end
     if query == M.exprstr "<Nul>" then
         return nil

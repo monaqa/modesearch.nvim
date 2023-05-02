@@ -72,7 +72,7 @@ modesearch.setup {
 
 vim.keymap.set("n", "/", function()
     return modesearch.keymap.prompt.show "rawstr"
-end, { expr = true })
+end, { expr = true, replace_keycodes = false })
 
 vim.keymap.set("c", "<C-x>", function()
     return modesearch.keymap.mode.cycle { "rawstr", "migemo", "regexp" }
