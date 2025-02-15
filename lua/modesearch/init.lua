@@ -1,10 +1,10 @@
 local M = {}
 
-local config = require "modesearch.config"
-local core = require "modesearch.core"
-local state = require "modesearch.state"
+local config = require("modesearch.config")
+local core = require("modesearch.core")
+local state = require("modesearch.state")
 
-M.keymap = require "modesearch.keymap"
+M.keymap = require("modesearch.keymap")
 
 local augroup = vim.api.nvim_create_augroup("modesearch", {})
 
