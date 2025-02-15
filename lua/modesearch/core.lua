@@ -1,5 +1,5 @@
-local state = require "modesearch.state"
-local config = require "modesearch.config"
+local state = require("modesearch.state")
+local config = require("modesearch.config")
 local M = {}
 
 ---@param text string
@@ -18,9 +18,10 @@ local function _prompt()
     local query
     vim.ui.input({
         prompt = prev_mode.prompt,
-        cancelreturn = M.exprstr "<Nul>",
+        cancelreturn = M.exprstr("<Nul>"),
     }, function(text)
         query = text
+        vim.print { t = "ui.input", text = text }
     end)
     while state.current_mode_name ~= prev_mode_name do
         prev_mode_name = state.current_mode_name
@@ -28,12 +29,13 @@ local function _prompt()
         vim.ui.input({
             prompt = prev_mode.prompt,
             default = query,
-            cancelreturn = M.exprstr "<Nul>",
+            cancelreturn = M.exprstr("<Nul>"),
         }, function(text)
             query = text
+            vim.print { t = "ui.input", text = text }
         end)
     end
-    if query == M.exprstr "<Nul>" then
+    if query == M.exprstr("<Nul>") then
         return nil
     end
     return query
@@ -42,16 +44,17 @@ end
 function M.prompt()
     state.prompt_active = true
     local query = _prompt()
+    vim.print { t = "test", query = query }
     state.prompt_active = false
     if query == nil then
         return ""
     end
     local search_cmd = "/"
     if query == "" then
-        return search_cmd .. M.exprstr "<CR>"
+        return search_cmd .. M.exprstr("<CR>")
     end
     local current_mode = config.options.modes[state.current_mode_name]
-    return search_cmd .. current_mode.converter(query) .. M.exprstr "<CR>"
+    vim.api.nvim_feedkeys(search_cmd .. current_mode.converter(query) .. M.exprstr("<CR>"), "n", false)
 end
 
 function M.highlight_paint()
