@@ -30,13 +30,13 @@ modesearch.setup {
     },
 }
 
-vim.keymap.set({"n", "x", "o"}, "/", function()
-    return modesearch.keymap.prompt.show "rawstr"
-end, { expr = true })
+vim.keymap.set({"n", "x"}, "/", function()
+    modesearch.keymap.prompt.show "rawstr"
+end)
 
 vim.keymap.set("c", "<C-x>", function()
-    return modesearch.keymap.mode.cycle { "rawstr", "regexp" }
-end, { expr = true })
+    modesearch.keymap.mode.cycle { "rawstr", "regexp" }
+end)
 ```
 
 ## Integration with [kensaku.vim](https://github.com/lambdalisue/kensaku.vim)
@@ -70,11 +70,11 @@ modesearch.setup {
     },
 }
 
-vim.keymap.set("n", "/", function()
-    return modesearch.keymap.prompt.show "rawstr"
-end, { expr = true, replace_keycodes = false })
+vim.keymap.set({"n", "x"}, "/", function()
+    modesearch.keymap.prompt.show "rawstr"
+end)
 
 vim.keymap.set("c", "<C-x>", function()
-    return modesearch.keymap.mode.cycle { "rawstr", "migemo", "regexp" }
-end, { expr = true })
+    modesearch.keymap.mode.cycle { "rawstr", "migemo", "regexp" }
+end)
 ```
